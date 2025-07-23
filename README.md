@@ -107,6 +107,7 @@ We welcome contributions! Please follow these steps:
 ## License
 
 ServerJars is open-source software licensed under the [Apache 2.0 License](LICENSE).
+If you do not understand this license, please view [Choose A License's page on it](https://choosealicense.com/licenses/apache-2.0/).
 
 ## Support
 
