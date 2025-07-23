@@ -1,0 +1,32 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+  <div class="container py-16 flex flex-col items-center justify-center min-h-[60vh]">
+    <div class="text-center max-w-2xl">
+      <div class="text-9xl text-red-500 mb-4">
+        <i class="bi bi-exclamation-octagon"></i>
+      </div>
+      
+      <h1 class="text-4xl font-bold text-white mb-4">{{ title }}</h1>
+      
+      <div class="text-xl text-red-300 mb-6 bg-red-900/50 p-4 rounded-lg border border-red-800">
+        {{ message }}
+      </div>
+      
+      <p class="text-gray-300 mb-8 text-lg">
+        The operation couldn't be completed. Please try again later or contact support if the problem persists.
+      </p>
+      
+      <div class="flex flex-wrap gap-4 justify-center">
+        <a href="/" class="btn flex items-center gap-2">
+          <i class="bi bi-house-door"></i> 
+          Return Home
+        </a>
+        <a href="/search" class="btn btn-outline flex items-center gap-2">
+          <i class="bi bi-search"></i> 
+          Search Builds
+        </a>
+      </div>
+    </div>
+  </div>
+{% endblock %}

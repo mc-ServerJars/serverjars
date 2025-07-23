@@ -1,0 +1,246 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+<div class="container py-8">
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
+    <div>
+      <h1 class="page-title">API Documentation</h1>
+      <p class="text-gray-300 text-lg">Programmatic access to ServerJars Minecraft builds</p>
+    </div>
+    
+    <div class="bg-blue-900/30 border border-blue-700 rounded-lg p-4">
+      <p class="text-blue-300">
+        <i class="bi bi-info-circle mr-2"></i>
+        API Version <span class="font-bold text-white">v1</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="card mb-8">
+    <h2 class="card-title">
+      <i class="bi bi-book card-icon"></i>
+      Getting Started
+    </h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <h3 class="font-semibold text-white mb-3">Base URL</h3>
+        <div class="bg-gray-800 p-4 rounded-lg border border-gray-700">
+          <p class="font-mono text-blue-300 break-all">https://serverjars.sir.systems/api/v1/</p>
+        </div>
+        
+        <h3 class="font-semibold text-white mt-6 mb-3">Authentication</h3>
+        <p class="text-gray-300">No authentication required. Please use responsibly.</p>
+      </div>
+      
+      <div>
+        <h3 class="font-semibold text-white mb-3">Response Format</h3>
+        <div class="bg-gray-800 p-4 rounded-lg">
+          <pre class="text-gray-200 overflow-x-auto"><code>{
+  "success": true,   // Request status
+  "status": 200,     // HTTP status code
+  "message": "",     // Optional message
+  // Endpoint-specific data
+}</code></pre>
+        </div>
+        
+        <h3 class="font-semibold text-white mt-6 mb-3">Rate Limits</h3>
+        <p class="text-gray-300">60 requests per minute per IP address</p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+    <!-- Builds Endpoint -->
+    <div class="card">
+      <div class="flex items-start justify-between mb-4">
+        <div>
+          <div class="bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full inline-block">GET</div>
+          <h2 class="text-xl font-bold text-white mt-2">/builds</h2>
+        </div>
+        <div class="bg-green-600 text-white px-3 py-1 rounded-full text-sm">200</div>
+      </div>
+      
+      <p class="text-gray-300 mb-4">Retrieve Minecraft server builds with optional filters.</p>
+      
+      <h3 class="font-semibold text-white mb-2">Parameters</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+        <div class="bg-gray-800 p-3 rounded">
+          <div class="text-blue-400 font-mono text-sm">game_version</div>
+          <div class="text-gray-400 text-sm">Minecraft version</div>
+        </div>
+        <div class="bg-gray-800 p-3 rounded">
+          <div class="text-blue-400 font-mono text-sm">software_version</div>
+          <div class="text-gray-400 text-sm">Software version</div>
+        </div>
+        <div class="bg-gray-800 p-3 rounded">
+          <div class="text-blue-400 font-mono text-sm">build_number</div>
+          <div class="text-gray-400 text-sm">Build number</div>
+        </div>
+        <div class="bg-gray-800 p-3 rounded">
+          <div class="text-blue-400 font-mono text-sm">fork</div>
+          <div class="text-gray-400 text-sm">Server fork</div>
+        </div>
+      </div>
+      
+      <h3 class="font-semibold text-white mb-2">Example Request</h3>
+      <div class="bg-gray-800 p-4 rounded-lg mb-4">
+        <pre class="text-gray-200 overflow-x-auto">GET /api/v1/builds?fork=Paper&game_version=1.20.1</pre>
+      </div>
+    </div>
+    
+    <!-- Stats Endpoint -->
+    <div class="card">
+      <div class="flex items-start justify-between mb-4">
+        <div>
+          <div class="bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full inline-block">GET</div>
+          <h2 class="text-xl font-bold text-white mt-2">/stats</h2>
+        </div>
+        <div class="bg-green-600 text-white px-3 py-1 rounded-full text-sm">200</div>
+      </div>
+      
+      <p class="text-gray-300 mb-4">Retrieve statistics about the ServerJars service.</p>
+      
+      <h3 class="font-semibold text-white mb-2">Response Structure</h3>
+      <div class="bg-gray-800 p-4 rounded-lg mb-4">
+        <pre class="text-gray-200 overflow-x-auto"><code>{
+  "storage": {
+    "bucket_size": "15.7 GB",
+    "object_count": 2450
+  },
+  "builds": {
+    "total": 2450,
+    "forks": [
+      {"fork": "Paper", "count": 850},
+      {"fork": "Purpur", "count": 420}
+    ]
+  }
+}</code></pre>
+      </div>
+    </div>
+    
+    <!-- Search Endpoint -->
+    <div class="card">
+      <div class="flex items-start justify-between mb-4">
+        <div>
+          <div class="bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full inline-block">GET</div>
+          <h2 class="text-xl font-bold text-white mt-2">/search</h2>
+        </div>
+        <div class="bg-green-600 text-white px-3 py-1 rounded-full text-sm">200</div>
+      </div>
+      
+      <p class="text-gray-300 mb-4">Search for a specific build by ID.</p>
+      
+      <h3 class="font-semibold text-white mb-2">Parameters</h3>
+      <div class="mb-4">
+        <div class="bg-gray-800 p-3 rounded">
+          <div class="text-blue-400 font-mono text-sm">id</div>
+          <div class="text-gray-400 text-sm">Build ID (required)</div>
+        </div>
+      </div>
+      
+      <h3 class="font-semibold text-white mb-2">Example Response</h3>
+      <div class="bg-gray-800 p-4 rounded-lg">
+        <pre class="text-gray-200 overflow-x-auto"><code>{
+  "id": 123,
+  "game_version": "1.20.1",
+  "fork": "Paper",
+  "build_number": 456,
+  "download_link": "https://..."
+}</code></pre>
+      </div>
+    </div>
+    
+    <!-- Error Handling -->
+    <div class="card">
+      <h2 class="card-title">
+        <i class="bi bi-exclamation-octagon card-icon"></i>
+        Error Handling
+      </h2>
+      
+      <div class="space-y-4">
+        <div class="flex items-start">
+          <div class="bg-red-600 text-white px-3 py-1 rounded-full text-sm mr-3 mt-1">400</div>
+          <div>
+            <h3 class="font-semibold text-white">Bad Request</h3>
+            <p class="text-gray-300">Invalid parameters or missing required fields</p>
+          </div>
+        </div>
+        
+        <div class="flex items-start">
+          <div class="bg-yellow-600 text-white px-3 py-1 rounded-full text-sm mr-3 mt-1">404</div>
+          <div>
+            <h3 class="font-semibold text-white">Not Found</h3>
+            <p class="text-gray-300">Requested resource could not be found</p>
+          </div>
+        </div>
+        
+        <div class="flex items-start">
+          <div class="bg-red-700 text-white px-3 py-1 rounded-full text-sm mr-3 mt-1">500</div>
+          <div>
+            <h3 class="font-semibold text-white">Server Error</h3>
+            <p class="text-gray-300">Internal server error occurred</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="card">
+    <h2 class="card-title">
+      <i class="bi bi-code-slash card-icon"></i>
+      Code Examples
+    </h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <h3 class="font-semibold text-white mb-3">JavaScript</h3>
+        <div class="bg-gray-800 p-4 rounded-lg">
+          <pre class="text-gray-200 overflow-x-auto"><code>// Get Paper builds for 1.20.1
+fetch('https://serverjars.sir.systems/api/v1/builds?fork=Paper&game_version=1.20.1')
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      console.log('Builds:', data.builds);
+    } else {
+      console.error('Error:', data.message);
+    }
+  });</code></pre>
+        </div>
+      </div>
+      
+      <div>
+        <h3 class="font-semibold text-white mb-3">Python</h3>
+        <div class="bg-gray-800 p-4 rounded-lg">
+          <pre class="text-gray-200 overflow-x-auto"><code>import requests
+
+# Get service statistics
+response = requests.get('https://serverjars.sir.systems/api/v1/stats')
+data = response.json()
+
+if data['success']:
+    print(f"Total builds: {data['stats']['builds']['total']}")
+    for fork in data['stats']['builds']['forks']:
+        print(f"{fork['fork']}: {fork['count']} builds")
+else:
+    print("Error:", data['message'])</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="card mt-6">
+    <h2 class="card-title">
+      <i class="bi bi-lightbulb card-icon"></i>
+      Best Practices
+    </h2>
+    <ul class="list-disc pl-5 space-y-2 text-gray-300">
+      <li>Always check the <code class="bg-gray-800 px-1 py-0.5 rounded">success</code> field before processing data</li>
+      <li>Handle errors using the <code class="bg-gray-800 px-1 py-0.5 rounded">message</code> field</li>
+      <li>Cache responses when possible to reduce server load</li>
+      <li>Include a descriptive User-Agent header with your requests</li>
+      <li>Respect the rate limit of 60 requests per minute</li>
+    </ul>
+  </div>
+</div>
+{% endblock %}

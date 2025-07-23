@@ -1,0 +1,141 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+  <div class="container py-8">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
+      <div>
+        <h1 class="page-title">Search Server Jars</h1>
+        <p class="text-gray-300 text-lg">Find specific builds using advanced filters</p>
+      </div>
+      
+      <div class="bg-blue-900/30 border border-blue-700 rounded-lg p-4">
+        <p class="text-blue-300">
+          <i class="bi bi-info-circle mr-2"></i>
+          Found <span class="font-bold text-white">{{ results|length }}</span> results
+        </p>
+      </div>
+    </div>
+    
+    <div class="card mb-8">
+      <h2 class="card-title">
+        <i class="bi bi-funnel card-icon"></i>
+        Search Filters
+      </h2>
+      
+      <form action="/search" method="POST" class="grid grid-cols-1 md:grid-cols-7 gap-4">
+        <div class="md:col-span-2">
+          <label class="block text-gray-300 mb-2 font-medium">Search Type</label>
+          <div class="relative">
+            <select 
+              name="type" 
+              class="w-full p-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
+            >
+              <option value="gv">Game version</option>
+              <option value="bn">Build number</option>
+              <option value="sv">Software version</option>
+              <option value="id">ID</option>
+              <option value="fork">Fork</option>
+              <option value="name">Name</option>
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
+              <i class="bi bi-chevron-down"></i>
+            </div>
+          </div>
+        </div>
+        
+        <div class="md:col-span-4">
+          <label class="block text-gray-300 mb-2 font-medium">Search Term</label>
+          <div class="relative">
+            <input 
+              name="query" 
+              type="text" 
+              placeholder="Enter your search term..." 
+              class="w-full p-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <div class="absolute inset-y-0 right-0 flex items-center px-3">
+              <i class="bi bi-search text-gray-400"></i>
+            </div>
+          </div>
+        </div>
+        
+        <div class="md:col-span-1 flex items-end">
+          <button type="submit" class="btn w-full h-[46px] flex items-center justify-center">
+            <i class="bi bi-search mr-2"></i> Search
+          </button>
+        </div>
+      </form>
+    </div>
+    
+    {% if results|length > 0 %}
+      <div class="card">
+        <h2 class="card-title">
+          <i class="bi bi-list-columns-reverse card-icon"></i>
+          Search Results
+        </h2>
+        
+        <div class="overflow-x-auto">
+          <table class="min-w-full">
+            <thead>
+              <tr class="border-b border-gray-700">
+                <th class="py-3 px-4 text-left text-gray-300 font-semibold">ID</th>
+                <th class="py-3 px-4 text-left text-gray-300 font-semibold">Game Version</th>
+                <th class="py-3 px-4 text-left text-gray-300 font-semibold">Software Version</th>
+                <th class="py-3 px-4 text-left text-gray-300 font-semibold">Fork</th>
+                <th class="py-3 px-4 text-left text-gray-300 font-semibold">Build No.</th>
+                <th class="py-3 px-4 text-left text-gray-300 font-semibold">Download</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for version in results %}
+                <tr class="border-b border-gray-800 hover:bg-gray-800/50 transition-colors">
+                  <td class="py-3 px-4 text-gray-200">{{ version.id|e }}</td>
+                  <td class="py-3 px-4 text-gray-200">{{ version.game_version|e }}</td>
+                  <td class="py-3 px-4 text-gray-200">
+                    {% if version.software_version == null %}
+                      <span class="text-gray-400">N/A</span>
+                    {% else %}
+                      {{ version.software_version|e }}
+                    {% endif %}
+                  </td>
+                  <td class="py-3 px-4 text-gray-200">
+                    <a href="/{{ version.fork|lower }}" class="text-blue-400 hover:underline">
+                      {{ version.fork|e }}
+                    </a>
+                  </td>
+                  <td class="py-3 px-4 text-gray-200">
+                    {% if version.build_number == 0 %}
+                      <span class="text-gray-400">N/A</span>
+                    {% else %}
+                      {{ version.build_number|e }}
+                    {% endif %}
+                  </td>
+                  <td class="py-3 px-4">
+                    <a 
+                      href="{{ version.download_link }}" 
+                      class="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors"
+                    >
+                      <i class="bi bi-download"></i>
+                      Download
+                    </a>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    {% else %}
+      <div class="card">
+        <div class="text-center py-12">
+          <div class="text-6xl text-blue-500 mb-4">
+            <i class="bi bi-search"></i>
+          </div>
+          <h3 class="text-2xl font-bold text-white mb-2">No Results Found</h3>
+          <p class="text-gray-400 max-w-md mx-auto">
+            Try different search criteria. You can search by game version, build number, fork name, or other attributes.
+          </p>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}

@@ -1,0 +1,121 @@
+{% extends 'layout.twig' %}
+{% block content %}
+  <section class="hero" style="background-image: url('https://serverjars.sir.systems/assets/1.webp')">
+    <div class="hero-overlay"></div>
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="text-4xl font-bold text-white mb-4">Server Jars</h1>
+        <p class="text-xl text-gray-300 max-w-2xl">
+          We index every server jar file from every major fork of Minecraft.
+        </p>
+        
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-value">
+              {% set count = 0 %}
+              {% for version in minecraft_versions %}
+                {% set count = count + 1 %}
+              {% endfor %}
+              {{ count == 0 ? '0' : count|number_format }}
+            </div>
+            <div class="stat-label">Total Builds</div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-value">
+              {% set unique_forks = [] %}
+              {% for version in minecraft_versions %}
+                {% if version.fork not in unique_forks %}
+                  {% set unique_forks = unique_forks|merge([version.fork]) %}
+                {% endif %}
+              {% endfor %}
+              {{ unique_forks|length }}
+            </div>
+            <div class="stat-label">Forks Indexed</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <div class="container">
+    <div class="projects-grid">
+      {% set projects = [
+        { 'name': 'Folia', 'description': 'Folia is a high-performance fork of Paper, designed for specific optimizations and experimental features.', 'project_url': 'https://papermc.io/software/folia', 'directory_url': '/folia', 'image_url': 'assets/2.webp', 'warning': true, 'warning_text': 'Folia is experimental, it requires a large number of CPU threads and may be unstable.' },
+        { 'name': 'Paper', 'description': 'Paper is a high-performance fork of the Minecraft server that aims to improve performance and reduce bugs.', 'project_url': 'https://papermc.io/software/paper', 'directory_url': '/paper', 'image_url': 'assets/3.webp' },
+        { 'name': 'Purpur', 'description': 'Purpur is a fork of Paper that offers additional configuration options and game-changing enhancements.', 'project_url': 'https://purpurmc.org/', 'directory_url': '/purpur', 'image_url': 'assets/4.webp' },
+        { 'name': 'Vanilla', 'description': 'Vanilla is the standard Minecraft server software without any performance improvements or added features.', 'project_url': 'https://www.minecraft.net/en-us/download/server', 'directory_url': '/vanilla', 'image_url': 'assets/5.webp' },
+        { 'name': 'Waterfall', 'description': 'Waterfall is a fork of BungeeCord that offers better performance and scalability for Minecraft proxy servers.', 'project_url': 'https://papermc.io/software/waterfall', 'directory_url': '/waterfall', 'image_url': 'assets/6.webp', 'warning': true, 'warning_text': 'Waterfall has been deprecated, meaning there is no support available and will be no updates in the future, including security updates.' },
+        { 'name': 'Velocity', 'description': 'Velocity is a proxy server that allows linking multiple Minecraft servers together and managing them efficiently.', 'project_url': 'https://papermc.io/software/velocity', 'directory_url': '/velocity', 'image_url': 'assets/7.webp' },
+        { 'name': 'Pufferfish', 'description': 'Pufferfish is a high performance fork of Paper, which aims to provide enterprise features and maximize performance.', 'project_url': 'https://pufferfish.host/downloads', 'directory_url': '/pufferfish', 'image_url': 'assets/8.png' },
+        { 'name': 'Arclight', 'description': 'A Bukkit(1.19/1.20) server implementation in modding environment using Mixin.', 'project_url': 'https://github.com/IzzelAliz/Arclight', 'directory_url': '/arclight', 'image_url': 'assets/9.png' },
+        { 'name': 'Sponge', 'description': 'A community-driven open source Minecraft: Java Edition modding platform.', 'project_url': 'https://spongepowered.org/', 'directory_url': '/sponge', 'image_url': 'assets/10.png' },
+        { 'name': 'Leaves', 'description': 'LeavesMC improves Minecraft\'s ecosystem with fast, secure and stable software.', 'project_url': 'https://leavesmc.org/', 'directory_url': '/leaves', 'image_url': 'assets/11.png' },
+        { 'name': 'Mohist', 'description': 'MohistMC creates unique hybrid Minecraft software and enhances select mods and plugins.', 'project_url': 'https://mohistmc.com/', 'directory_url': '/mohist', 'image_url': 'assets/12.png' },
+        { 'name': 'NeoForge', 'description': 'NeoForge is a free, open-source, community-oriented modding API for Minecraft', 'project_url': 'https://neoforged.net/', 'directory_url': '/neoforge', 'image_url': 'assets/13.png' },
+        { 'name': 'Forge', 'description': 'Minecraft Forge allows players to install and run Minecraft mods.', 'project_url': 'https://files.minecraftforge.net/', 'directory_url': '/forge', 'image_url': 'assets/14.png' },
+        { 'name': 'Quilt', 'description': 'The Quilt project is an open-source, community-driven modding toolchain.', 'project_url': 'https://quiltmc.org/', 'directory_url': '/quilt', 'image_url': 'assets/15.png' },
+        { 'name': 'BungeeCord', 'description': 'BungeeCord proxies and maintains connections between multiple Minecraft servers.', 'project_url': 'https://www.spigotmc.org/wiki/bungeecord/', 'directory_url': '/bungeecord', 'image_url': 'assets/16.png' },
+        { 'name': 'Fabric', 'description': 'Fabric is a modular, lightweight mod loader for Minecraft', 'project_url': 'https://fabricmc.net/', 'directory_url': '/fabric', 'image_url': 'assets/17.png' }
+      ] %}
+
+      {% for project in projects %}
+        {% set count = 0 %}
+        {% for version in minecraft_versions %}
+          {% if version.fork == project.name %}
+            {% set count = count + 1 %}
+          {% endif %}
+        {% endfor %}
+
+        <div class="project-card">
+          <div 
+            class="project-bg" 
+            style="background-image: url('{{ project.image_url }}')">
+          </div>
+          
+          <div class="project-content">
+            <div class="project-header">
+              <h2 class="project-title">{{ project.name }}</h2>
+              
+              {% if count > 0 %}
+                <a href="{{ project.directory_url }}" class="project-builds">
+                  Browse {{ count }} builds
+                </a>
+              {% else %}
+                <span class="project-builds" style="background: var(--gray);">
+                  No builds
+                </span>
+              {% endif %}
+            </div>
+            
+            <p class="project-description">{{ project.description }}</p>
+            
+            <a href="{{ project.project_url }}" class="project-link">
+              Learn more
+              <i class="bi bi-arrow-right"></i>
+            </a>
+            
+            {% if project.warning %}
+              <div class="warning-banner">
+                <i class="bi bi-exclamation-triangle warning-icon"></i>
+                <p class="warning-text">{{ project.warning_text }}</p>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    
+    <div class="info-box">
+      <h3 class="info-title">
+        <i class="bi bi-info-circle"></i>
+        What is this?
+      </h3>
+      <p class="text-gray-300">
+        Serverjars is a small project that allows you to easily download server jars to host your own Minecraft server. 
+        It's a simple website that allows you to select a Minecraft version and download the server jar. 
+        It also allows you to download the latest builds of Paper, Purpur, and Folia.
+      </p>
+    </div>
+  </div>
+{% endblock %}
