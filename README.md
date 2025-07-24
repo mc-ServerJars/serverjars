@@ -62,7 +62,7 @@ $dbPassword = 'secure_pass';// Database password
 Import the SQL schema:
 
 ```bash
-mysql -u [username] -p [database_name] < database/schema.sql
+mysql -u [username] -p [database_name] < schema.sql
 ```
 
 ## Usage
